@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>stackpurger</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary: #0f172a;
+            --accent: #f59e0b;
+            --bg-light: #f8fafc;
+            --text-dark: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+        }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; color: var(--text-dark); line-height: 1.6; }
+        
+        /* HERO SECTION */
+        .hero {
+            background: linear-gradient(135deg, var(--secondary) 0%, #1e3a5f 100%);
+            color: white;
+            padding: 80px 20px;
+            text-align: center;
+        }
+        .hero h1 { font-size: 3rem; font-weight: 800; margin-bottom: 16px; letter-spacing: -1px; }
+        .hero .tagline { font-size: 1.4rem; opacity: 0.95; margin-bottom: 8px; }
+        .hero .subtitle { font-size: 1.1rem; opacity: 0.8; max-width: 600px; margin: 0 auto 30px; }
+        .hero .cta-btn {
+            display: inline-block;
+            background: var(--accent);
+            color: var(--secondary);
+            padding: 16px 40px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            text-decoration: none;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .hero .cta-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(245, 158, 11, 0.3); }
+        
+        /* PROBLEM SECTION */
+        .problem-section { padding: 70px 20px; background: white; }
+        .problem-section .container { max-width: 900px; margin: 0 auto; }
+        .problem-section h2 { text-align: center; font-size: 2.2rem; margin-bottom: 40px; }
+        .problem-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; }
+        .problem-card { background: #fef2f2; border: 1px solid #fecaca; border-radius: 12px; padding: 24px; }
+        .problem-card h3 { color: #dc2626; margin-bottom: 8px; }
+        
+        /* FEATURES SECTION */
+        .features-section { padding: 70px 20px; background: var(--bg-light); }
+        .features-section .container { max-width: 1100px; margin: 0 auto; }
+        .features-section h2 { text-align: center; font-size: 2.2rem; margin-bottom: 16px; }
+        .features-section .section-desc { text-align: center; color: var(--text-muted); margin-bottom: 50px; max-width: 600px; margin-left: auto; margin-right: auto; }
+        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 30px; }
+        .feature-card { background: white; border-radius: 16px; padding: 30px; text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.05); transition: transform 0.2s; }
+        .feature-card:hover { transform: translateY(-4px); }
+        .feature-icon { width: 50px; height: 50px; background: var(--primary); color: white; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1.3rem; margin: 0 auto 16px; }
+        .feature-card h3 { margin-bottom: 10px; font-size: 1.1rem; }
+        .feature-card p { color: var(--text-muted); font-size: 0.95rem; }
+        
+        /* INTERACTIVE DEMO SECTION */
+        .demo-section { padding: 70px 20px; background: white; }
+        .demo-section .container { max-width: 700px; margin: 0 auto; }
+        .demo-section h2 { text-align: center; font-size: 2.2rem; margin-bottom: 16px; }
+        .demo-section .section-desc { text-align: center; color: var(--text-muted); margin-bottom: 40px; }
+        
+        .demo-card { background: white; border: 2px solid var(--border); border-radius: 16px; padding: 32px; box-shadow: 0 10px 40px rgba(0,0,0,0.08); }
+        .form-group { margin-bottom: 18px; }
+        .form-group label { display: block; font-weight: 600; margin-bottom: 6px; color: var(--text-dark); }
+        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 12px 14px; border: 2px solid var(--border); border-radius: 8px; font-size: 1rem; transition: border-color 0.2s; }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: var(--primary); }
+        
+        .btn { background: var(--primary); color: white; border: none; padding: 14px 28px; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; width: 100%; transition: background 0.2s; }
+        .btn:hover { background: var(--primary-dark); }
+        
+        .output-area { background: #f0fdf4; border: 2px solid #bbf7d0; border-radius: 10px; padding: 20px; margin-top: 20px; display: none; }
+        .output-area.visible { display: block; }
+        .output-item { padding: 10px 0; border-bottom: 1px solid #bbf7d0; display: flex; align-items: flex-start; gap: 10px; }
+        .output-item:last-child { border: none; }
+        .output-item .check { color: #16a34a; font-weight: bold; }
+        
+        /* PRICING SECTION */
+        .pricing-section { padding: 70px 20px; background: var(--secondary); color: white; text-align: center; }
+        .pricing-section .container { max-width: 700px; margin: 0 auto; }
+        .pricing-section h2 { font-size: 2.2rem; margin-bottom: 16px; }
+        .pricing-card { background: white; color: var(--text-dark); border-radius: 16px; padding: 40px; margin-top: 30px; }
+        .price { font-size: 3rem; font-weight: 800; color: var(--primary); }
+        .price span { font-size: 1rem; font-weight: 400; color: var(--text-muted); }
+        .trial { display: inline-block; background: #dcfce7; color: #16a34a; padding: 6px 14px; border-radius: 20px; font-size: 0.9rem; font-weight: 600; margin-top: 10px; }
+        .pricing-features { list-style: none; margin: 24px 0; text-align: left; }
+        .pricing-features li { padding: 10px 0; display: flex; align-items: center; gap: 10px; }
+        .pricing-features li::before { content: '✓'; color: #16a34a; font-weight: bold; }
+        
+        /* FINAL CTA */
+        .final-cta { padding: 60px 20px; background: var(--bg-light); text-align: center; }
+        .final-cta h2 { font-size: 2rem; margin-bottom: 12px; }
+        .final-cta p { color: var(--text-muted); margin-bottom: 24px; }
+        
+        /* FOOTER */
+        footer { background: var(--secondary); color: white; padding: 30px 20px; text-align: center; opacity: 0.9; }
+        footer p { font-size: 0.9rem; opacity: 0.7; }
+        
+        @media (max-width: 640px) {
+            .hero h1 { font-size: 2.2rem; }
+            .hero .tagline { font-size: 1.2rem; }
+        }
+    </style>
+</head>
+<body>
+    <!-- HERO SECTION -->
+    <section class="hero">
+        <div class="container">
+            <h1>stackpurger</h1>
+            <p class="tagline">The smart way to manage your software stack</p>
+            <p class="subtitle">Stop overpaying for software you do not use.</p>
+            <a href="#demo" class="cta-btn">Start Free Trial</a>
+        </div>
+    </section>
+
+    <!-- PROBLEM SECTION -->
+    <section class="problem-section">
+        <div class="container">
+            <h2>Why This Matters</h2>
+            <div class="problem-grid">
+                <div class="problem-card">
+                    <h3>💸 Wasted Money</h3>
+                    <p>Companies lose thousands on unused subscriptions every year.</p>
+                </div>
+                <div class="problem-card">
+                    <h3>⏰ Wasted Time</h3>
+                    <p>Manual tracking takes hours each month.</p>
+                </div>
+                <div class="problem-card">
+                    <h3>😰 Renewal Surprises</h3>
+                    <p>Forgotten renewals hit without warning.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FEATURES SECTION -->
+    <section class="features-section">
+        <div class="container">
+            <h2>What You Get</h2>
+            <p class="section-desc">Everything you need to optimize your software stack</p>
+            <div class="features-grid">
+                
+        <div class="feature-card">
+            <div class="feature-icon">1</div>
+            <h3>Subscription Tracking</h3>
+            <p>See all your SaaS spend in one place</p>
+        </div>
+    
+        <div class="feature-card">
+            <div class="feature-icon">2</div>
+            <h3>Usage Analytics</h3>
+            <p>Know who actually uses what</p>
+        </div>
+    
+        <div class="feature-card">
+            <div class="feature-icon">3</div>
+            <h3>Savings Recommendations</h3>
+            <p>Get personalized tips to cut costs</p>
+        </div>
+    
+            </div>
+        </div>
+    </section>
+
+    <!-- INTERACTIVE DEMO SECTION -->
+    <section class="demo-section" id="demo">
+        <div class="container">
+            <h2>See It In Action</h2>
+            <p class="section-desc">Try it right now - no signup required</p>
+            
+            <div class="demo-card">
+                <div class="form-group"><label for="userCount">Number of Users</label><select id="userCount"><option value="">Select...</option><option value="1-5">1-5</option><option value="6-20">6-20</option><option value="21-50">21-50</option><option value="50+">50+</option></select></div>
+<div class="form-group"><label for="monthlySpend">Current Monthly Software Spend</label><select id="monthlySpend"><option value="">Select...</option><option value="Under $100">Under $100</option><option value="$100-500">$100-500</option><option value="$500-1000">$500-1000</option><option value="$1000+">$1000+</option></select></div>
+<div class="form-group"><label for="topProblem">Biggest Pain Point</label><select id="topProblem"><option value="">Select...</option><option value="Too many subscriptions">Too many subscriptions</option><option value="Hard to track usage">Hard to track usage</option><option value="Wasted seats">Wasted seats</option><option value="Renewal surprises">Renewal surprises</option></select></div>
+                <button class="btn" onclick="runDemo()">Get Your Results</button>
+                
+                <div class="output-area" id="output">
+                    <h3 style="margin-bottom: 16px;">🎯 Your Personalized Results:</h3>
+                    <div id="results"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PRICING SECTION -->
+    <section class="pricing-section">
+        <div class="container">
+            <h2>Simple, Transparent Pricing</h2>
+            <div class="pricing-card">
+                <div class="price">$19<span>/month</span></div>
+                <div class="trial">7 days free</div>
+                <ul class="pricing-features">
+                    <li>Full access to all features</li>
+                    <li>Unlimited users</li>
+                    <li>Cancel anytime</li>
+                    <li>Email support included</li>
+                </ul>
+                <button class="btn" style="background: var(--accent); color: var(--secondary);" onclick="alert('Sign up flow coming soon!')">Start Free Trial</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- FINAL CTA -->
+    <section class="final-cta">
+        <div class="container">
+            <h2>Ready to Get Started?</h2>
+            <p>Join hundreds of companies already saving time and money.</p>
+            <a href="#demo" class="cta-btn" style="background: var(--primary); color: white; padding: 16px 40px; border-radius: 8px; text-decoration: none; font-weight: 600;">Try Free For 7 days free</a>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="container">
+            <p>© 2026 stackpurger. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        function runDemo() {
+            const output = document.getElementById('output');
+            const results = document.getElementById('results');
+            
+            // Collect inputs
+            const inputs = document.querySelectorAll('#demo input, #demo select, #demo textarea');
+            let filled = 0;
+            inputs.forEach(inp => { if(inp.value) filled++; });
+            
+            if (filled < inputs.length) {
+                alert('Please fill in all fields to see your results.');
+                return;
+            }
+            
+            // Generate results based on inputs
+            const userCount = document.getElementById('userCount')?.value || '1-5';
+            const spend = document.getElementById('monthlySpend')?.value || '$100-500';
+            const problem = document.getElementById('topProblem')?.value || 'Too many subscriptions';
+            
+            let savings = '$240';
+            if (spend === '$100-500') savings = '$480';
+            if (spend === '$500-1000') savings = '$960';
+            if (spend === '$1000+') savings = '$1,800';
+            
+            const resultsHTML = `
+                <div class="output-item">
+                    <span class="check">✓</span>
+                    <span>Based on ${userCount} users, you could save <strong>${savings}/year</strong></span>
+                </div>
+                <div class="output-item">
+                    <span class="check">✓</span>
+                    <span>Your main issue: <strong>${problem}</strong></span>
+                </div>
+                <div class="output-item">
+                    <span class="check">✓</span>
+                    <span>Recommended: Try our free 7-day trial to see full savings</span>
+                </div>
+                <div class="output-item">
+                    <span class="check">✓</span>
+                    <span>Setup takes less than 5 minutes</span>
+                </div>
+            `;
+            
+            results.innerHTML = resultsHTML;
+            output.classList.add('visible');
+            
+            // Scroll to results
+            output.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+    </script>
+</body>
+</html>
